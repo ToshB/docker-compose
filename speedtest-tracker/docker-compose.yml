@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  speedtest-tracker:
+    ports:
+      - '8080:80'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - DB_CONNECTION=sqlite
+      - 'DB_HOST=/config/database.sqlite'
+      - SSL_MODE=off
+    env_file:
+      - stack.env
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - '/home/pi/speedtest-tracker/config:/config'
+      - '/home/pi/speedtest-tracker/web:/etc/ssl/web'
+    image: 'ghcr.io/alexjustesen/speedtest-tracker:latest'
+    restart: unless-stopped

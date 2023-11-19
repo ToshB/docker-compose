@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  xcomfortd:
+    image: 'karloygard/xcomfortd:latest'
+    devices:
+      - '/dev/ttyAMA0:/dev/ttyAMA0'
+    privileged: true
+    environment:
+      - 'MQTT_SERVER=tcp://mosquitto:1883'
+    command:
+      'xcomfortd --eprom --hadiscovery'
+    volumes:
+      - '/etc/timezone:/etc/timezone:ro'
+      - '/etc/localtime:/etc/localtime:ro'
+    restart: unless-stopped
+  mosquitto:
+    image: 'eclipse-mosquitto'
+    ports:
+      - '1883:1883'
+    volumes:
+      - '/etc/timezone:/etc/timezone:ro'
+      - '/etc/localtime:/etc/localtime:ro'
+      - '/home/pi/mosquitto/config:/mosquitto/config'
+      - '/home/pi/mosquitto/data:/mosquitto/data'
+      - '/home/pi/mosquitto/log:/mosquitto/log'
+    restart: unless-stopped
